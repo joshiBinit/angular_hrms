@@ -1,0 +1,18 @@
+<div *ngIf="employee$ | async as employee" class="bg-white p-6 rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Employee Details</h2>
+  <p><strong>ID:</strong> {{ employee.id }}</p>
+  <p><strong>Name:</strong> {{ employee.name }}</p>
+  <p><strong>Department:</strong> {{ employee.department }}</p>
+  <p><strong>Role:</strong> {{ employee.role }}</p>
+
+  <div class="mt-4 flex gap-2">
+    <button
+      mat-stroked-button
+      color="primary"
+      [routerLink]="['/employees', employee.id, 'edit']"
+    >
+      Edit
+    </button>
+    <button mat-stroked-button color="warn">Delete</button>
+  </div>
+</div>

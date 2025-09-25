@@ -1,0 +1,12 @@
+/* Add to your generic-table component's CSS */
+:host {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  /* Add any mobile-specific table styles here */
+  ::ng-deep table {
+    font-size: 0.875rem; /* Smaller font size on mobile */
+  }
+}
