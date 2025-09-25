@@ -12,12 +12,12 @@ import * as fromEmployee from '../../store/employee.selectors';
 })
 export class EmployeeDetailComponent implements OnInit {
   employeeId!: string;
-  employee$: Observable<any>;
+  // employee$: Observable<any>;
 
   constructor(private route: ActivatedRoute, private store: Store) {
-    this.employee$ = this.store.select(
-      fromEmployee.selectEmployeeById(this.employeeId)
-    );
+    // this.employee$ = this.store.select(
+    //   fromEmployee.selectEmployeeById(this.employeeId)
+    // );
   }
 
   ngOnInit(): void {

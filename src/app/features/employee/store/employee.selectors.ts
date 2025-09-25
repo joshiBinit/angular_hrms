@@ -7,14 +7,15 @@ export const selectEmployeeState = createFeatureSelector<EmployeeState>(
 
 export const selectAllEmployees = createSelector(
   selectEmployeeState,
-  (state: EmployeeState) => state.employees
+  (state) => state.employees
 );
 
 export const selectEmployeesLoading = createSelector(
   selectEmployeeState,
-  (state: EmployeeState) => state.loading
+  (state) => state.loading
 );
-export const selectEmployeeById = (id: string) =>
-  createSelector(selectEmployeeState, (state) =>
-    state.employees.find((e) => e.id == id)
-  );
+
+export const selectEmployeesError = createSelector(
+  selectEmployeeState,
+  (state) => state.error
+);

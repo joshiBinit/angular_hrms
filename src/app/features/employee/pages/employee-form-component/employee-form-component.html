@@ -2,15 +2,13 @@
   <h2 class="text-xl font-bold mb-4">
     {{ isEdit ? "Edit Employee" : "Add Employee" }}
   </h2>
-
+  @if(form){
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
-    <mat-form-field class="w-full">
-      <mat-label>Employee Name</mat-label>
-      <input matInput formControlName="name" placeholder="Enter name" />
-      @if (form.get('name')?.hasError('required')) {
-      <mat-error>Name is required</mat-error>
-      }
-    </mat-form-field>
+    <app-input-text
+      [control]="name"
+      [label]="'Employee Name'"
+      [placeholder]="'Enter name'"
+    ></app-input-text>
 
     <app-input-select
       [control]="department"
@@ -20,13 +18,30 @@
     >
     </app-input-select>
 
-    <mat-form-field class="w-full">
-      <mat-label>Role</mat-label>
-      <input matInput formControlName="role" placeholder="Enter role" />
-      @if (form.get('role')?.hasError('required')) {
-      <mat-error>Role is required</mat-error>
-      }
-    </mat-form-field>
+    <app-input-text
+      [control]="role"
+      [label]="'Role'"
+      [placeholder]="'Enter role'"
+    ></app-input-text>
+
+    <app-input-date
+      [control]="joiningDate"
+      [label]="'Joining Date'"
+      [placeholder]="'Pick joining date'"
+    ></app-input-date>
+
+    <app-input-number
+      [control]="salary"
+      [label]="'Salary'"
+      [placeholder]="'Enter salary'"
+      [min]="0"
+    ></app-input-number>
+
+    <app-input-file
+      [control]="profilePhoto"
+      [label]="'Profile Photo'"
+      [accept]="'image/*'"
+    ></app-input-file>
 
     <button
       mat-raised-button
@@ -37,4 +52,5 @@
       {{ isEdit ? "Update" : "Create" }}
     </button>
   </form>
+  }
 </div>
