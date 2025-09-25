@@ -5,6 +5,7 @@
   @if(form){
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
     <app-input-text
+      appAutoFocusInput
       [control]="name"
       [label]="'Employee Name'"
       [placeholder]="'Enter name'"
@@ -37,18 +38,13 @@
       [min]="0"
     ></app-input-number>
 
-    <app-input-file
+    <!-- <app-input-file
       [control]="profilePhoto"
       [label]="'Profile Photo'"
       [accept]="'image/*'"
-    ></app-input-file>
+    ></app-input-file> -->
 
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="form.invalid"
-    >
+    <button mat-raised-button color="primary" type="submit">
       {{ isEdit ? "Update" : "Create" }}
     </button>
   </form>

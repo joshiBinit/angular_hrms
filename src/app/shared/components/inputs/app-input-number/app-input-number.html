@@ -7,11 +7,9 @@
     [placeholder]="placeholder"
     [attr.min]="min"
   />
-
-  <mat-error *ngIf="control.hasError('required')">
-    {{ label }} is required
-  </mat-error>
-  <mat-error *ngIf="control.hasError('min')">
-    {{ label }} must be {{ min ?? "non-negative" }}
-  </mat-error>
+  @if(control.hasError('required')){
+  <mat-error> {{ label }} is required </mat-error>
+  } @if(control.hasError('min')){
+  <mat-error> {{ label }} must be {{ min ?? "non-negative" }} </mat-error>
+  }
 </mat-form-field>

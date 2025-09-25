@@ -7,5 +7,11 @@
 
 <app-loading [loading]="loading$ | async"></app-loading>
 
-<app-generic-table [columns]="columns" [data]="employees$ | async">
+<app-generic-table
+  [columns]="columns"
+  [data]="employees$ | async"
+  [showActions]="true"
+  [actions]="actions"
+  (actionClicked)="onTableAction($event)"
+>
 </app-generic-table>

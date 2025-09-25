@@ -14,6 +14,8 @@ import { AppInputNumber } from './components/inputs/app-input-number/app-input-n
 import { AppInputDate } from './components/inputs/app-input-date/app-input-date';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppInputFile } from './components/inputs/app-input-file/app-input-file';
+import { AutoFocusInput } from './directives/AutoFocusInput/auto-focus-input';
+import { AutoFocusInvalid } from './directives/AutoFocusInvalid/auto-focus-invalid';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { AppInputFile } from './components/inputs/app-input-file/app-input-file'
     RouterModule,
     AppSelectComponent,
     ReactiveFormsModule,
+    AutoFocusInput,
+    AutoFocusInvalid,
   ],
   exports: [
     LoadingComponent,
@@ -45,6 +49,8 @@ import { AppInputFile } from './components/inputs/app-input-file/app-input-file'
     AppInputText,
     AppInputNumber,
     AppInputFile,
+    AutoFocusInput,
+    AutoFocusInvalid,
   ],
 })
 export class SharedModule {}

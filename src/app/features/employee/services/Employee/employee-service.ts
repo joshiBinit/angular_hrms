@@ -9,6 +9,8 @@ import { Employee } from '../../../../shared/models/employee.model';
 export class EmployeeService {
   private apiUrl = 'http://localhost:5000/api/employees';
 
+  private departmentUrl = 'http://localhost:5000/api/departments';
+
   constructor(private http: HttpClient) {}
 
   getEmployees(): Observable<Employee[]> {

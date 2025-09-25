@@ -5,9 +5,11 @@ export const selectEmployeeState = createFeatureSelector<EmployeeState>(
   EMPLOYEE_SELECTOR_KEY
 );
 
-export const selectAllEmployees = createSelector(
-  selectEmployeeState,
-  (state) => state.employees
+export const selectAllEmployees = createSelector(selectEmployeeState, (state) =>
+  state.employees.map((emp, index) => ({
+    ...emp,
+    sn: index + 1,
+  }))
 );
 
 export const selectEmployeesLoading = createSelector(

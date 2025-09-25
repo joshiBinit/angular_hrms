@@ -2,11 +2,12 @@
   <mat-label>{{ label }}</mat-label>
   <input
     matInput
+    appAutoFocusInvalid
     [formControl]="control"
     [placeholder]="placeholder"
     [type]="type"
   />
-  <mat-error *ngIf="control.hasError('required')">
-    {{ label }} is required
-  </mat-error>
+  @if(control.hasError('required')){
+  <mat-error> {{ label }} is required </mat-error>
+  }
 </mat-form-field>

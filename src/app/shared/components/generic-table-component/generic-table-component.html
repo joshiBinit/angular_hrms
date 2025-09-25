@@ -1,34 +1,73 @@
-<div class="overflow-x-auto bg-white shadow rounded">
+<div class="overflow-x-auto bg-white shadow rounded border border-gray-200">
   <table
     mat-table
     [dataSource]="data || []"
-    class="min-w-full text-sm text-left border-collapse"
+    class="min-w-full border-collapse text-sm"
   >
+    <!-- dynamic columns -->
     @for (col of columns; track col.field) {
     <ng-container [matColumnDef]="col.field">
-      <th mat-header-cell *matHeaderCellDef class="px-4 py-2 font-semibold">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        class="px-4 py-3 font-semibold text-gray-700 border-b bg-gray-50 text-left"
+      >
         {{ col.header }}
       </th>
-      <td mat-cell *matCellDef="let row" class="px-4 py-2">
+      <td
+        mat-cell
+        *matCellDef="let row"
+        class="px-4 py-3 text-gray-800 border-b"
+      >
         {{ row[col.field] }}
       </td>
     </ng-container>
     }
 
+    <!-- actions column with fixed width -->
+    @if (showActions) {
+    <ng-container matColumnDef="actions">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        class="px-4 py-3 font-semibold text-gray-700 border-b bg-gray-50 text-center w-48"
+      >
+        ACTIONS
+      </th>
+      <td mat-cell *matCellDef="let row" class="px-4 py-3 border-b w-48">
+        <div class="flex justify-center items-center gap-2">
+          @for (act of actions; track act.type) {
+          <button
+            mat-stroked-button
+            [color]="act.color || 'primary'"
+            class="!text-xs !min-w-0 !px-3 !py-1 !h-8"
+            (click)="onAction(act.type, row)"
+          >
+            {{ act.label }}
+          </button>
+          }
+        </div>
+      </td>
+    </ng-container>
+    }
+
+    <!-- header row -->
     <tr
       mat-header-row
       *matHeaderRowDef="displayedColumns"
-      class="bg-gray-100 border-b"
+      class="text-sm uppercase tracking-wide"
     ></tr>
 
+    <!-- data rows -->
     <tr
       mat-row
       *matRowDef="let row; columns: displayedColumns"
-      class="border-b hover:bg-gray-50"
+      class="hover:bg-gray-50 transition-colors"
     ></tr>
   </table>
 
+  <!-- empty state -->
   @if (!(data?.length)) {
-  <div class="p-4 text-center text-gray-500">No records found.</div>
+  <div class="p-6 text-center text-gray-500">No records found.</div>
   }
 </div>
