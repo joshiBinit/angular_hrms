@@ -29,6 +29,28 @@ const routes: Routes = [
             (m) => m.EmployeeModule
           ),
       },
+      {
+        path: 'departments',
+        loadChildren: () =>
+          import('./features/department/department-module').then(
+            (m) => m.DepartmentModule
+          ),
+      },
+      {
+        path: 'attendance',
+        loadChildren: () =>
+          import('./features/attendance/attendance-module').then(
+            (m) => m.AttendanceModule
+          ),
+      },
+      {
+        path: 'payroll',
+        loadChildren: () =>
+          import('./features/payroll/payroll-module').then(
+            (m) => m.PayrollModule
+          ),
+      },
+
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
