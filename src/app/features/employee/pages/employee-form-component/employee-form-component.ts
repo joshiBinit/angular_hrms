@@ -97,40 +97,23 @@ export class EmployeeFormComponent implements OnInit {
     return this.getFormArray('incomes');
   }
 
-  getIncomeValidationError(): string | null {
-    const errors = this.incomes.errors;
-    if (errors && errors['incomeInconsistent']) {
-      return errors['incomeInconsistent'].message;
+  getIncomeErrorMessage(index: number): string | null {
+    const error = this.incomes.errors?.['invalidIncomeHierarchy'];
+
+    if (error) {
+      // Check if this index is the invalid one or the conflicting one
+      if (error.invalidIndex === index) {
+        return error.message;
+      }
+
+      // Optionally highlight the conflicting income too
+      if (error.conflictingIndex === index) {
+        return 'This income conflicts with another entry';
+      }
     }
+
     return null;
   }
-
-  // getExpectedAmount(index: number): number | null {
-  //   if (this.incomes.length < 2 || index === 0) {
-  //     return null;
-  //   }
-
-  //   const baseIncome = this.incomes.at(0).value;
-  //   const currentIncome = this.incomes.at(index).value;
-
-  //   if (
-  //     !baseIncome.frequency ||
-  //     !baseIncome.interval ||
-  //     !baseIncome.amount ||
-  //     !currentIncome.frequency ||
-  //     !currentIncome.interval
-  //   ) {
-  //     return null;
-  //   }
-
-  //   return Math.round(
-  //     IncomeValidator.getExpectedAmount(
-  //       baseIncome,
-  //       currentIncome.frequency,
-  //       currentIncome.interval
-  //     )
-  //   );
-  // }
 
   private getSelectedValues<T>(
     arrayName: string,

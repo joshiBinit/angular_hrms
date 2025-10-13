@@ -1,4 +1,9 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 
 interface IncomeFormValue {
   frequency: number;
@@ -7,102 +12,78 @@ interface IncomeFormValue {
 }
 
 export class IncomeValidator {
-  private static readonly INTERVAL_DAYS: { [key: string]: number } = {
+  private static readonly INTERVAL_RANK: { [key: string]: number } = {
     Daily: 1,
-    Weekly: 7,
-    Monthly: 30,
-    Quarterly: 90,
-    Yearly: 365,
+    Weekly: 2,
+    Monthly: 3,
+    Quarterly: 4,
+    Yearly: 5,
   };
-
-  private static calculateDailyIncome(income: IncomeFormValue): number {
-    const { frequency, interval, amount } = income;
-    const intervalDays = this.INTERVAL_DAYS[interval] || 1;
-
-    return (amount * frequency) / intervalDays;
-  }
-
-  private static calculateExpectedAmount(
-    dailyIncome: number,
-    frequency: number,
-    interval: string
-  ): number {
-    const intervalDays = this.INTERVAL_DAYS[interval] || 1;
-
-    return (dailyIncome * intervalDays) / frequency;
-  }
 
   static incomeConsistency(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const formArray = control;
+      const formArray = control as FormArray;
 
-      if (
-        !formArray ||
-        !Array.isArray(formArray.value) ||
-        formArray.value.length < 2
-      ) {
+      if (!formArray || formArray.length < 2) {
         return null;
       }
 
-      const incomes: IncomeFormValue[] = formArray.value;
+      const validIncomes: { income: IncomeFormValue; index: number }[] = [];
 
-      const validIncomes = incomes.filter(
-        (income) =>
-          income.frequency !== null &&
-          income.interval !== null &&
-          income.amount !== null &&
-          income.amount > 0
-      );
+      for (let i = 0; i < formArray.length; i++) {
+        const income = formArray.at(i).value as IncomeFormValue;
+        if (income.interval && income.amount !== null && income.amount > 0) {
+          validIncomes.push({ income, index: i });
+        }
+      }
 
       if (validIncomes.length < 2) {
         return null;
       }
 
-      const baseDailyIncome = this.calculateDailyIncome(validIncomes[0]);
+      const baseIncome = validIncomes[0];
 
       for (let i = 1; i < validIncomes.length; i++) {
-        const currentIncome = validIncomes[i];
-        const currentDailyIncome = this.calculateDailyIncome(currentIncome);
+        const current = validIncomes[i];
 
-        const tolerance = baseDailyIncome * 0.01;
-        const difference = Math.abs(currentDailyIncome - baseDailyIncome);
+        for (let j = 0; j < i; j++) {
+          const previous = validIncomes[j];
 
-        if (difference > tolerance) {
-          const expectedAmount = this.calculateExpectedAmount(
-            baseDailyIncome,
-            currentIncome.frequency,
-            currentIncome.interval
-          );
+          const currentRank = this.INTERVAL_RANK[current.income.interval];
+          const previousRank = this.INTERVAL_RANK[previous.income.interval];
 
-          return {
-            incomeInconsistent: {
-              index: i,
-              currentAmount: currentIncome.amount,
-              expectedAmount: Math.round(expectedAmount),
-              message: `Income entry ${
-                i + 1
-              } is inconsistent. Expected amount: ${Math.round(
-                expectedAmount
-              )} based on your other entries.`,
-            },
-          };
+          let hasError = false;
+          let message = '';
+
+          if (
+            currentRank > previousRank &&
+            current.income.amount <= previous.income.amount
+          ) {
+            hasError = true;
+
+            message = `Invalid amount`;
+          }
+
+          if (
+            currentRank < previousRank &&
+            current.income.amount >= previous.income.amount
+          ) {
+            hasError = true;
+            message = `Invalid amount`;
+          }
+
+          if (hasError) {
+            return {
+              invalidIncomeHierarchy: {
+                message: message,
+                invalidIndex: current.index,
+              },
+            };
+          }
         }
       }
 
       return null;
     };
-  }
-
-  static getExpectedAmount(
-    baseIncome: IncomeFormValue,
-    targetFrequency: number,
-    targetInterval: string
-  ): number {
-    const baseDailyIncome = this.calculateDailyIncome(baseIncome);
-    return this.calculateExpectedAmount(
-      baseDailyIncome,
-      targetFrequency,
-      targetInterval
-    );
   }
 }
