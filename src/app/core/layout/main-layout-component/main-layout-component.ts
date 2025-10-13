@@ -12,17 +12,7 @@ export class MainLayoutComponent {
   isMobile = false;
 
   headerActions: HeaderAction[] = [
-    {
-      icon: 'notifications',
-      label: 'Notifications',
-      actionType: 'notifications',
-    },
     { icon: 'account_circle', label: 'Profile', actionType: 'profile' },
-    {
-      icon: 'people',
-      label: 'people',
-      actionType: 'people',
-    },
   ];
 
   ngOnInit() {
