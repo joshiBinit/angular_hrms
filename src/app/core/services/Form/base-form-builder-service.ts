@@ -1,5 +1,3 @@
-// shared/services/base-form-v2.service.ts
-
 import { Injectable } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -11,7 +9,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export abstract class BaseFormV2Service {
+export abstract class BaseFormService {
   // private encapsulated form instance
   #formGroup?: FormGroup;
 
